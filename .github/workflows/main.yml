@@ -47,9 +47,4 @@ jobs:
           push: ${{ github.ref == 'refs/heads/main' }}
           tags: ${{ secrets.DOCKER_USERNAME }}/tp-devops-httpd:latest
 
-      - name: Build and push database image
-        uses: docker/build-push-action@v6
-        with:
-          context: ./initdb
-          push: ${{ github.ref == 'refs/heads/main' }}
-          tags: ${{ secrets.DOCKER_USERNAME }}/tp-devops-database:latest
+      
