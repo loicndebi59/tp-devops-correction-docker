@@ -22,3 +22,34 @@ jobs:
  
       - name: Build and test with Maven
         run: mvn clean verify --file ./simple-api/pom.xml
+  build-and-push-docker-image:
+    needs: test-backend  # n'exécute que si les tests passent
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to DockerHub
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+      - name: Build and push backend image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./simple-api
+          push: ${{ github.ref == 'refs/heads/main' }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-simple-api:latest
+
+      - name: Build and push httpd image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./http-server
+          push: ${{ github.ref == 'refs/heads/main' }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-httpd:latest
+
+      - name: Build and push database image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./initdb
+          push: ${{ github.ref == 'refs/heads/main' }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-database:latest
