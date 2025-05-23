@@ -25,12 +25,12 @@ jobs:
 
       - name: SonarCloud analysis
         working-directory: ./simple-api
-        run: mvn -B verify sonar:sonar \
-          -Dsonar.projectKey=loicndebi59_tp-devops-correction-docker \
-          -Dsonar.organization=loicndebi59 \
-          -Dsonar.host.url=https://sonarcloud.io \
-          -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
-          --file ./simple-api/pom.xml
+        run: |
+          mvn -B verify sonar:sonar \
+            -Dsonar.projectKey=loicndebi59_tp-devops-correction-docker \
+            -Dsonar.organization=loicndebi59 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
   build-and-push-docker-image:
     needs: test-backend  # n'exécute que si les tests passent
