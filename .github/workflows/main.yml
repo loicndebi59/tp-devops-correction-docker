@@ -24,6 +24,7 @@ jobs:
         run: mvn clean verify --file ./simple-api/pom.xml
 
       - name: SonarCloud analysis
+        working-directory: ./simple-api
         run: mvn -B verify sonar:sonar \
           -Dsonar.projectKey=loicndebi59_tp-devops-correction-docker \
           -Dsonar.organization=loicndebi59 \
